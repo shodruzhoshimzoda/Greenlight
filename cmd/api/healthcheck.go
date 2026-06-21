@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"net/http"
 )
 
@@ -16,7 +15,7 @@ func (app *application) healthcheck(w http.ResponseWriter, r *http.Request) {
 	}
 
 
-	js, err := json.Marshal(data); 
+	err := app.writeJSON(w, 200, data, nil) 
 	
 	if err != nil {
 		app.logger.Error(err.Error())
@@ -24,8 +23,7 @@ func (app *application) healthcheck(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(js)
+	
 
 
 }

@@ -1,12 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"net/http"
 	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
+
 // Read id parametr from request
 func (app *application) readIdParams(r *http.Request) (int64, error) {
 
@@ -22,4 +24,27 @@ func (app *application) readIdParams(r *http.Request) (int64, error) {
 
 
 	
+}
+
+
+// This helper method help us to write JSON
+func (app *application) writeJSON(w http.ResponseWriter, status int, data any, header http.Header) error {
+
+
+	js, err := json.MarshalIndent(data, "", "	")
+	if err != nil {
+		return  err
+	}
+
+	
+
+	for key, value := range header {
+		w.Header()[key] = value
+	}
+
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	w.Write(js)
+	return nil
 }
