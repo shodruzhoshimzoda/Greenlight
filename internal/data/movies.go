@@ -2,14 +2,12 @@ package data
 
 import "time"
 
-
-
 type Movie struct {
-	ID 			int64
-	CreatedAt	time.Time
-	Title 		string
-	Year 		int32
-	Runtime 	int32
-	Genres		[]string
-	Version 	[]string
+	ID        int64     `json:"id"`
+	CreatedAt time.Time `json:"-"` // (hiphen will make disappear this field)
+	Title     string    `json:"title"`
+	Year      int32     `json:"year,omitempty"`
+	Runtime   int32     `json:"runtime,omitempty"`
+	Genres    []string  `json:"genres,omitempty"`
+	Version   []string  `json:"version"`
 }
