@@ -8,10 +8,13 @@ import (
 
 func (app *application) healthcheck(w http.ResponseWriter, r *http.Request) {
 
-	data := map[string]string{
+	data := envelope{
 		"status":"available",
-		"environment":app.cfg.env,
+		"system_info": map[string]string{
+			"environment":app.cfg.env,
 		"version":version,
+		},
+		
 	}
 
 

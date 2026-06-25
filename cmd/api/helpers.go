@@ -9,6 +9,9 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+
+type envelope map[string]any
+
 // Read id parametr from request
 func (app *application) readIdParams(r *http.Request) (int64, error) {
 
@@ -28,7 +31,7 @@ func (app *application) readIdParams(r *http.Request) (int64, error) {
 
 
 // This helper method help us to write JSON
-func (app *application) writeJSON(w http.ResponseWriter, status int, data any, header http.Header) error {
+func (app *application) writeJSON(w http.ResponseWriter, status int, data envelope, header http.Header) error {
 
 
 	js, err := json.MarshalIndent(data, "", "	")
