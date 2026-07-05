@@ -40,7 +40,7 @@ func (app *application) serverError(w http.ResponseWriter, r *http.Request, erro
 }
 
 
-func (app *application) notFoundError(w http.ResponseWriter, r *http.Request, error error) {
+func (app *application) notFoundResponse(w http.ResponseWriter, r *http.Request) {
 	
 	message := "the requested rssource could not be found"
 

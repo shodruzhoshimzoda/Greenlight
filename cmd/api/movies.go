@@ -21,7 +21,7 @@ func (app *application) showMovieHandler(w http.ResponseWriter, r *http.Request)
 	id, err := app.readIdParams(r)
 
 	if err != nil {
-		app.notFoundError(w,r, err)
+		app.notFoundResponse(w,r)
 		return
 	}
 
