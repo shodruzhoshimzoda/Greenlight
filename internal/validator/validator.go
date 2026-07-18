@@ -1,0 +1,59 @@
+package validator
+
+import (
+	"regexp"
+	"slices"
+)
+
+var (
+	EmailRX = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\n(?:\\\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+)
+
+type Validator struct {
+	Errors map[string]string
+}
+
+func New() *Validator {
+	return &Validator{make(map[string]string)}
+}
+
+// Valid - helper, return true if errors map doesn't contain any entries
+func (v *Validator) Valid() bool {
+	return len(v.Errors) == 0
+}
+
+// AddError - add an error to the map (so long as no entry exists in the map for given key )
+func (v *Validator) AddError(key, value string) {
+
+	if _, exists := v.Errors[key]; !exists {
+		v.Errors[key] = value
+	}
+
+}
+
+// Check 	adds an error message to the map if validation check is not 'ok'
+func (v *Validator) Check(ok bool, key, value string) {
+	if !ok {
+		v.AddError(key, value)
+	}
+
+}
+
+// PermittedValues -Generic function which returns true if a specific value is in a list of permitted values.
+func PermittedValues[T comparable](value T, permittedValues ...T) bool {
+	return slices.Contains(permittedValues, value)
+}
+
+// Matches returns true if a string value matches a specific regexp pattern.
+func Matches(value string, rx *regexp.Regexp) bool {
+	return rx.MatchString(value)
+}
+
+// Unique - Generic function which returns true if all values in a slice are unique.
+func Unique[T comparable](values []T) bool {
+	uniqueValues := make(map[T]bool)
+	for _, value := range values {
+		uniqueValues[value] = true
+	}
+	return len(values) == len(uniqueValues)
+}
