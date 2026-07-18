@@ -10,7 +10,7 @@ var (
 )
 
 type Validator struct {
-	Error map[string]string
+	Errors map[string]string
 }
 
 func New() *Validator {
@@ -19,14 +19,14 @@ func New() *Validator {
 
 // Valid - helper, return true if errors map doesn't contain any entries
 func (v *Validator) Valid() bool {
-	return len(v.Error) == 0
+	return len(v.Errors) == 0
 }
 
 // AddError - add an error to the map (so long as no entry exists in the map for given key )
 func (v *Validator) AddError(key, value string) {
 
-	if _, exists := v.Error[key]; !exists {
-		v.Error[key] = value
+	if _, exists := v.Errors[key]; !exists {
+		v.Errors[key] = value
 	}
 
 }
