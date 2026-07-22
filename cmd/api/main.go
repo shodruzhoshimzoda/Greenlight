@@ -5,11 +5,13 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
+	"log"
 	"log/slog"
 	"net/http"
 	"os"
 	"time"
 
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
@@ -35,8 +37,21 @@ func main() {
 
 	flag.IntVar(&cfg.port, "port", 4000, "API server port")
 	flag.StringVar(&cfg.env, "env", "development", "Environment development|staging|production")
+
+	// environement variable for PostgreSQL DSN
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file")
+		os.Exit(1)
+	}
+
+	DSN := os.Getenv("DB_DSN")
+
+	if DSN == "" {
+		log.Fatalf("DSN was not set yet")
+		os.Exit(1)
+	}
 	// Connection to PostgreSQL DSN
-	flag.StringVar(&cfg.db.dsn, "db-dsn", "postgres://greenlight:pa55word@localhost/greenlight?sslmode=disable", "PostgreSQL DSN")
+	flag.StringVar(&cfg.db.dsn, "db-dsn", DSN, "PostgreSQL DSN")
 	flag.Parse()
 
 	// initializing logger
